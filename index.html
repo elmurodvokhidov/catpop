@@ -1,17 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet" href="style.css">
-     <script src="main.js" defer></script>
      <title>Pop Cat</title>
+
+     <style>
+          @keyframes fall {
+               0% {
+                    transform: translateY(-100px) rotate(-45deg);
+                    opacity: 0;
+               }
+
+               10% {
+                    opacity: 1;
+               }
+
+               80% {
+                    opacity: 1;
+               }
+
+               100% {
+                    transform: translateY(100vh) rotate(-45deg);
+                    opacity: 0;
+               }
+          }
+
+          @keyframes pulse-gradient {
+               0% {
+                    background-position: 0% 50%;
+               }
+
+               50% {
+                    background-position: 100% 50%;
+               }
+
+               100% {
+                    background-position: 0% 50%;
+               }
+          }
+
+          body {
+               height: 100vh;
+               display: flex;
+               justify-content: center;
+               align-items: center;
+               overflow: hidden;
+               margin: 0;
+               background: linear-gradient(to right, #ffecd2, #fcb69f, #ffecd2);
+               animation: pulse-gradient 15s ease infinite;
+               background-size: 200% 100%;
+          }
+
+          .wrapper {
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+          }
+
+          #popcat {
+               width: 400px;
+          }
+
+          #btn {
+               width: 150px;
+               height: 70px;
+               font-size: 2em;
+               letter-spacing: 3px;
+               border: 3px solid lightcoral;
+               background-color: transparent;
+               color: lightcoral;
+               margin-top: 40px;
+               user-select: none;
+               border-radius: 30px;
+               cursor: pointer;
+          }
+
+          #btn:focus {
+               outline: none;
+          }
+
+          #btn:active {
+               border: 3px solid #ff9a9a;
+               color: #ff9a9a;
+          }
+
+          .heart-container {
+               position: absolute;
+               width: 100%;
+               height: 100%;
+               pointer-events: none;
+          }
+
+          .heart {
+               position: absolute;
+               width: 20px;
+               height: 20px;
+               background-color: tomato;
+               transform: rotate(-45deg);
+               animation: fall linear infinite;
+               opacity: 0;
+          }
+
+          .heart::before,
+          .heart::after {
+               content: '';
+               position: absolute;
+               width: 20px;
+               height: 20px;
+               background-color: tomato;
+               border-radius: 50%;
+          }
+
+          .heart::before {
+               top: -10px;
+               left: 0;
+          }
+
+          .heart::after {
+               left: 10px;
+               top: 0;
+          }
+
+          .heart:nth-child(1) {
+               left: 10%;
+               animation-duration: 8s;
+               animation-delay: 0s;
+          }
+
+          .heart:nth-child(2) {
+               left: 30%;
+               animation-duration: 6s;
+               animation-delay: 2s;
+               width: 15px;
+               height: 15px;
+          }
+
+          .heart:nth-child(2)::before,
+          .heart:nth-child(2)::after {
+               width: 15px;
+               height: 15px;
+          }
+
+          .heart:nth-child(3) {
+               left: 70%;
+               animation-duration: 7s;
+               animation-delay: 1s;
+          }
+
+          .heart:nth-child(4) {
+               left: 35%;
+               animation-duration: 10s;
+               animation-delay: 2s;
+          }
+
+          .heart:nth-child(5) {
+               left: 80%;
+               animation-duration: 8s;
+               animation-delay: 4s;
+          }
+
+          @media only screen and (max-width: 480px) {
+               #popcat {
+                    width: 200px;
+               }
+          }
+     </style>
 </head>
+
 <body>
-    <div class="wrapper">
-         <img id="popcat" src="image/close.png" alt="">
-         <button id="btn">POP</button>
-    </div>
+     <div class="wrapper">
+          <img id="popcat" src="image/close.png" alt="...">
+          <button id="btn">Bosing</button>
+     </div>
+
+     <div class="heart-container">
+          <div class="heart"></div>
+          <div class="heart"></div>
+          <div class="heart"></div>
+          <div class="heart"></div>
+          <div class="heart"></div>
+     </div>
+
+     <script>
+          const popcat = document.querySelector("#popcat");
+          const btn = document.querySelector("#btn");
+
+          const openMouthImg = "image/open.png";
+          const closeMouthImg = "image/close.png";
+
+          const openMouthSound = new Audio("sound/sound-open.mp3");
+          const closeMouthSound = new Audio("sound/sound-close.mp3");
+
+          btn.addEventListener("mousedown", openMouth);
+          btn.addEventListener("mouseup", closeMouth);
+
+          btn.addEventListener("touchstart", function (e) {
+               e.preventDefault();
+               openMouth();
+          })
+
+          btn.addEventListener("touchend", function (e) {
+               e.preventDefault();
+               closeMouth();
+          })
+
+          function openMouth() {
+               popcat.src = openMouthImg;
+               openMouthSound.play();
+          }
+
+          function closeMouth() {
+               popcat.src = closeMouthImg;
+               closeMouthSound.play();
+          }
+     </script>
 </body>
+
 </html>
